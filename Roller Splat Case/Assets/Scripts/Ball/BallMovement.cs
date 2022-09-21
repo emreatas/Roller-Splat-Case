@@ -16,10 +16,10 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private Vector3 _startPos;
     [SerializeField] private Vector3 _swipeDelta;
 
-    Rigidbody _rb;
 
 
     [SerializeField] private int _speed = 20;
+
 
 
     private void Update()
@@ -65,14 +65,12 @@ public class BallMovement : MonoBehaviour
                 if (x < 0)
                 {
                     _isSwipeLeft = true;
-                    Debug.Log("left");
 
                     gameObject.GetComponent<Rigidbody>().velocity = Vector3.left * _speed;
                 }
                 else
                 {
                     _isSwipeRight = true;
-                    Debug.Log("right");
 
                     gameObject.GetComponent<Rigidbody>().velocity = Vector3.right * _speed;
 
@@ -85,7 +83,6 @@ public class BallMovement : MonoBehaviour
                 if (y < 0)
                 {
                     _isSwipeDown = true;
-                    Debug.Log("down");
 
                     gameObject.GetComponent<Rigidbody>().velocity = Vector3.back * _speed;
 
@@ -94,13 +91,15 @@ public class BallMovement : MonoBehaviour
                 else
                 {
                     _isSwipeUp = true;
-                    Debug.Log("up");
 
                     gameObject.GetComponent<Rigidbody>().velocity = Vector3.forward * _speed;
 
                 }
 
             }
+
+
+
 
             Reset();
         }
@@ -120,17 +119,6 @@ public class BallMovement : MonoBehaviour
 
 
 
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Ground")
-        {
-
-            other.gameObject.GetComponent<MeshRenderer>().material.color = Color.black;
-
-
-        }
-    }
 
 
 }

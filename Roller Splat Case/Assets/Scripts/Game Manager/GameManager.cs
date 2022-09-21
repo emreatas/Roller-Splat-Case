@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameWin != null)
         {
-            OnGameWin();
+            GameWin();
         }
     }
 
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
         if (LevelChanged != null)
         {
-            OnLevelChanged();
+            LevelChanged();
         }
     }
 
