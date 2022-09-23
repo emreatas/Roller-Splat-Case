@@ -14,11 +14,15 @@ public class LevelController : MonoBehaviour
             levelManagers[i].gameObject.SetActive(false);
         }
         levelManagers[levelCount].gameObject.SetActive(true);
+        GameManager.Instance.OnCurrentLevel(levelCount);
+
     }
     private void OnEnable()
     {
         GameManager.LevelChanged += GameManager_LevelChanged;
     }
+
+
 
     private void GameManager_LevelChanged()
     {
@@ -26,6 +30,7 @@ public class LevelController : MonoBehaviour
         {
 
             levelCount++;
+            GameManager.Instance.OnCurrentLevel(levelCount);
 
             for (int i = 0; i < levelManagers.Count; i++)
             {
@@ -40,6 +45,7 @@ public class LevelController : MonoBehaviour
     private void OnDisable()
     {
         GameManager.LevelChanged -= GameManager_LevelChanged;
+
 
     }
 }

@@ -33,5 +33,16 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public static event Action<int> CurrentLevel;
+    public void OnCurrentLevel(int currentLevel)
+    {
+        if (CurrentLevel != null)
+        {
+            CurrentLevel(currentLevel);
+        }
+    }
+
+
+
 
 }

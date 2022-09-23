@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
         GameManager.GameWin += GameManager_GameWin;
     }
 
+
     private void GameManager_GameWin()
     {
         GameManager.Instance.OnLevelChanged();
@@ -39,7 +40,6 @@ public class LevelManager : MonoBehaviour
     {
         if (_grounds.Count == _coloredGround)
         {
-
 
             GameManager_GameWin();
         }

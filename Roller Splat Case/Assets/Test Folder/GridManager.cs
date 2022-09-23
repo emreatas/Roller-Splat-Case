@@ -5,48 +5,77 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
 
-    public int maxHeight;
-    public int maxWidth;
-
-
+    [SerializeField] private int _height;
+    [SerializeField] private int _width;
     [SerializeField] private GameObject _tilePrefab;
-
-
-    [SerializeField] private List<Tile> _tiles;
-
+    public List<Tile> _allTiles;
 
 
 
     private void Start()
     {
-        for (int i = 0; i < maxHeight; i++)
+        for (int i = 0; i < _height; i++)
         {
-            for (int j = 0; j < maxWidth; j++)
+            for (int j = 0; j < _width; j++)
             {
-                GameObject go = Instantiate(_tilePrefab, new Vector3(j, 0, i), Quaternion.Euler(90, 0, 0));
-                go.GetComponent<Tile>().TileX = j;
-                go.GetComponent<Tile>().TileY = i;
-                _tiles.Add(go.GetComponent<Tile>());
+                GameObject go = Instantiate(_tilePrefab, new Vector3(i, 0, j), Quaternion.Euler(90, 0, 0));
+                go.GetComponent<Tile>().TileX = i;
+                go.GetComponent<Tile>().TileY = j;
+                go.name = "Tile " + "x:" + i + "," + "y:" + j;
+
+
+                _allTiles.Add(go.GetComponent<Tile>());
+
             }
         }
 
-
-
-        for (int i = 0; i < _tiles.Count; i++)
+        for (int i = 0; i < _allTiles.Count; i++)
         {
-            for (int j = 0; j < _tiles.Count; j++)
+            if (_allTiles[i].TileX == _width - 1 || _allTiles[i].TileX == 0)
             {
-                if (j + 1 <= maxWidth)
-                {
-                    if (_tiles[i].TileX == _tiles[j + 1].TileX && _tiles[i].TileY == _tiles[j + 1].TileY && _tiles[j + 1].TileX != maxWidth)
-                    {
-                        _tiles[i]._neighborTiles.Add(_tiles[j].gameObject);
-                    }
-                }
+                _allTiles[i].IsBlock = true;
+                _allTiles[i].GetComponent<MeshRenderer>().material.color = Color.red;
 
+            }
+            if (_allTiles[i].TileY == _height - 1 || _allTiles[i].TileY == 0)
+            {
+                _allTiles[i].IsBlock = true;
+                _allTiles[i].GetComponent<MeshRenderer>().material.color = Color.red;
+
+            }
+        }
+
+        CheckNeighbour();
+
+        TestGameManager.instance.OnAllTiles(_allTiles);
+    }
+
+
+    private void CheckNeighbour()
+    {
+        for (int i = 0; i < _allTiles.Count; i++)
+        {
+            // if (_allTiles[i].TileX - _allTiles[i].TileX == 0 && _allTiles[i + 1].TileX < _width)
+            if (_allTiles[i].TileY + 1 <= _height - 1)
+            {
+                _allTiles[i]._upNeighbor = _allTiles[i + 1];
+            }
+            if (_allTiles[i].TileY - 1 >= 0)
+            {
+                _allTiles[i]._downNeighbor = _allTiles[i - 1];
+            }
+            if (_allTiles[i].TileX + 1 <= _width - 1)
+            {
+                _allTiles[i]._rightNeighbor = _allTiles[i + _width];
+            }
+            if (_allTiles[i].TileX - 1 >= 0)
+            {
+                _allTiles[i]._leftNeighbor = _allTiles[i - _width];
             }
         }
     }
+
+
 
 
 
