@@ -6,7 +6,12 @@ public class Tile : MonoBehaviour
 {
     private int _tileX;
     private int _tileY;
-    private bool isBlock;
+
+    [SerializeField] private Vector2Int _position;
+    [SerializeField] private bool _isBlockDir;
+    [SerializeField] private bool _isCorner;
+
+    [SerializeField] private bool _isBlock;
 
     public Tile _upNeighbor;
     public Tile _downNeighbor;
@@ -28,10 +33,58 @@ public class Tile : MonoBehaviour
 
     }
 
+    public Vector2Int Position
+    {
+        get { return _position; }
+        set { _position = value; }
+    }
+
+    public bool IsBlockDir
+    {
+        get { return _isBlockDir; }
+        set
+        {
+            _isBlockDir = value;
+            if (_isBlockDir)
+            {
+                // gameObject.GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+        }
+    }
+    public bool isCorner
+    {
+        get { return _isCorner; }
+        set
+        {
+            _isCorner = value;
+            if (_isCorner)
+            {
+                gameObject.GetComponent<MeshRenderer>().material.color = Color.black;
+
+            }
+        }
+    }
+
     public bool IsBlock
     {
-        get { return isBlock; }
-        set { isBlock = value; }
+        get { return _isBlock; }
+        set
+        {
+            _isBlock = value;
+            if (IsBlock && !isCorner)
+            {
+                gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+            else if (IsBlock && isCorner)
+            {
+                return;
+            }
+            else
+            {
+                gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
+
+            }
+        }
     }
 
 

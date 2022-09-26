@@ -43,6 +43,23 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public static event Action<Dictionary<Vector2Int, Tile>> AllTilesPos;
+    public void OnAllTiles(Dictionary<Vector2Int, Tile> tiles)
+    {
+        if (AllTilesPos != null)
+        {
+            AllTilesPos(tiles);
+        }
+    }
+
+    public static event Action<int, int> LevelSize;
+    public void OnLevelSize(int _height, int _width)
+    {
+        if (LevelSize != null)
+        {
+            LevelSize(_height, _width);
+        }
+    }
 
 
 }

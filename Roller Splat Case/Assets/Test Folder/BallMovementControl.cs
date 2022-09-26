@@ -22,6 +22,8 @@ public class BallMovementControl : MonoBehaviour
     public List<Tile> tiles;
     public Tile currentTile;
     public List<Tile> movementTiles;
+    private int _pathWayCurrentIndex = 0;
+
     private void OnEnable()
     {
         TestGameManager.AllTiles += TestGameManager_AllTiles;
@@ -31,6 +33,7 @@ public class BallMovementControl : MonoBehaviour
     {
         tiles = obj;
         currentTile = tiles[11];
+        currentTile.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
         gameObject.transform.position = currentTile.transform.position;
         gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + .5f, transform.position.z);
 
@@ -193,13 +196,36 @@ public class BallMovementControl : MonoBehaviour
 
             }
         }
+        StartCoroutine(MoveBallToTarget(movementTiles));
     }
 
 
 
 
 
+    IEnumerator MoveBallToTarget(List<Tile> path)
+    {
+        yield return new WaitForFixedUpdate();
+        if (gameObject.transform.position != path[path.Count - 1].transform.position)
+        {
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
+                path[_pathWayCurrentIndex].transform.position, _speed * Time.deltaTime);
 
+            StartCoroutine(MoveBallToTarget(path));
+
+            if (gameObject.transform.position == path[_pathWayCurrentIndex].transform.position &&
+                _pathWayCurrentIndex < path.Count)
+            {
+                path[_pathWayCurrentIndex].GetComponent<MeshRenderer>().material.color = Color.blue;
+                _pathWayCurrentIndex++;
+            }
+        }
+        else
+        {
+            StopCoroutine(MoveBallToTarget(path));
+            _pathWayCurrentIndex = 0;
+        }
+    }
 
 
 
