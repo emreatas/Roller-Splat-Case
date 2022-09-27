@@ -61,5 +61,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static event Action<Vector2Int> StartPos;
+    public void OnStartPos(Vector2Int startTile)
+    {
+        if (StartPos != null)
+        {
+            StartPos(startTile);
+        }
+    }
+
 
 }

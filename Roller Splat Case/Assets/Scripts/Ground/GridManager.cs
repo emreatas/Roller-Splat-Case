@@ -14,6 +14,8 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        _height = Random.Range(16, 33);
+        _width = Random.Range(8, 17);
         GameManager.Instance.OnLevelSize(_height, _width);
 
         for (int i = 0; i < _height; i++)

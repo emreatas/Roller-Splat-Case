@@ -24,14 +24,14 @@ public class CameraController : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(Cam());  
+        StartCoroutine(Cam());
     }
 
     IEnumerator Cam()
     {
         yield return new WaitForFixedUpdate();
         cam = this.gameObject.GetComponent<Camera>();
-        cam.transform.position = new Vector3((float)_height / 2 - 0.5f, _height * 2, (float)_width / 2 - 0.5f);
+        cam.transform.position = new Vector3((float)_width / 2 - .5f, _height * 1.5f, (float)_height / 2);
 
         cam.orthographicSize = (_height / 2) + 1;
 

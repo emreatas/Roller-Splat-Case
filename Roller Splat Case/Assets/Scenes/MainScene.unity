@@ -2903,6 +2903,8 @@ MonoBehaviour:
   firstTileY: 0
   _height: 0
   _width: 0
+  _changeDirCount: 1
+  moveTiles: []
 --- !u!4 &1390849494 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6900399497716979982, guid: 25bb7317c85c8b84b86593d9e6221f82, type: 3}

@@ -30,31 +30,34 @@ public class BallMovement : MonoBehaviour
     private void OnEnable()
     {
         GameManager.AllTilesPos += GameManager_AllTilesPos;
+        GameManager.StartPos += GameManager_StartPos;
     }
+
+
 
     private void GameManager_AllTilesPos(Dictionary<Vector2Int, Tile> obj)
     {
         tiles = obj;
-        currentTile = tiles[new Vector2Int(0, 0)];
+
+
+    }
+    private void GameManager_StartPos(Vector2Int obj)
+    {
+
+        currentTile = tiles[obj];
+        tiles[obj].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
         currentTile.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
         gameObject.transform.position = currentTile.transform.position;
         gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + .5f, transform.position.z);
-    }
-
-    private void GameManager_AllTiles(List<Tile> obj)
-    {
-
 
     }
-
     private void OnDisable()
     {
         GameManager.AllTilesPos -= GameManager_AllTilesPos;
+        GameManager.StartPos -= GameManager_StartPos;
+
     }
 
-    private void Start()
-    {
-    }
 
     private void Update()
     {
@@ -222,7 +225,7 @@ public class BallMovement : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
 
-        if (path.Count > 0 && gameObject.transform.position != path[path.Count - 1].transform.position )
+        if (path.Count > 0 && gameObject.transform.position != path[path.Count - 1].transform.position)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position,
                 path[_pathWayCurrentIndex].transform.position, _speed * Time.deltaTime);

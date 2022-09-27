@@ -67,6 +67,8 @@ public class LevelGenerator : MonoBehaviour
 
         flagTile = _tiles[new Vector2Int(firstTileX, firstTileY)];
 
+        GameManager.Instance.OnStartPos(flagTile.Position);
+
         for (int i = 0; i < _height; i++)
         {
             for (int j = 0; j < _width; j++)
@@ -83,190 +85,201 @@ public class LevelGenerator : MonoBehaviour
 
         Direction currentDir = (Direction)Random.Range(0, 4);
         int count;
-        currentDir = Direction.Up;
+        moveTiles.Add(flagTile);
+        Debug.Log(flagTile);
 
+        _changeDirCount = Random.Range(10, 20);
         for (int i = 0; i < _changeDirCount; i++)
         {
+
             switch (currentDir)
             {
                 case Direction.Up:
 
-
-                    while (flagTile._upNeighbor != null && !flagTile._upNeighbor.isCorner && !flagTile._upNeighbor.IsBlockDir)
+                    if (flagTile._upNeighbor != null && !flagTile._upNeighbor.IsBlockDir && !flagTile._upNeighbor.isCorner)
                     {
-                        moveTiles.Add(flagTile._upNeighbor);
-                        flagTile = flagTile._upNeighbor;
+                        while (flagTile._upNeighbor != null && !flagTile._upNeighbor.IsBlockDir && !flagTile._upNeighbor.isCorner)
+                        {
+                            moveTiles.Add(flagTile._upNeighbor);
+                            flagTile = flagTile._upNeighbor;
+                        }
+
+
+                        if (moveTiles.Count != 0 && moveTiles[0]._downNeighbor != null)
+                        {
+                            moveTiles[0]._downNeighbor.IsBlockDir = true;
+                        }
+
+                        Debug.Log("up mtc: " + moveTiles.Count);
+
+
+                        count = Random.Range(1, moveTiles.Count);
+                        Debug.Log("up c: " + count);
+                        for (int j = 0; j <= count; j++)
+                        {
+                            moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+                            moveTiles[j].IsBlock = false;
+                        }
+
+                        if (moveTiles[count]._upNeighbor != null)
+                        {
+                            moveTiles[count]._upNeighbor.IsBlockDir = true;
+                        }
+
+                        flagTile = moveTiles[count];
+                        Debug.Log("up ft: " + flagTile);
+                        moveTiles.Clear();
+                        moveTiles.Add(flagTile);
+                        currentDir = (Direction)Random.Range(2, 4);
+                    }
+                    else
+                    {
+                        currentDir = Direction.Down;
+
                     }
 
-                    if (moveTiles.Count != 0 && moveTiles[0]._downNeighbor != null)
-                    {
-                        moveTiles[0]._downNeighbor.IsBlockDir = true;
-
-                    }
-
-                    count = Random.Range(1, moveTiles.Count);
 
 
-                    for (int j = 0; j < count; j++)
-                    {
-                        moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-
-
-                    }
-
-                    if (moveTiles[count - 1]._upNeighbor != null && !moveTiles[count - 1]._upNeighbor.IsBlockDir)
-                    {
-                        moveTiles[count - 1]._upNeighbor.IsBlockDir = true;
-
-                    }
-
-                    if (moveTiles[count - 1] != null)
-                    {
-                        flagTile = moveTiles[count - 1];
-
-                    }
-
-
-
-
-                    moveTiles.Clear();
-                    moveTiles.Add(flagTile);
-
-                    currentDir = (Direction)Random.Range(2, 4);
                     break;
                 case Direction.Down:
 
-                    while (flagTile._downNeighbor != null && !flagTile._downNeighbor.isCorner && !flagTile._downNeighbor.IsBlockDir)
+
+                    if (flagTile._downNeighbor != null && !flagTile._downNeighbor.IsBlockDir && !flagTile._downNeighbor.isCorner)
                     {
-                        moveTiles.Add(flagTile._downNeighbor);
-                        flagTile = flagTile._downNeighbor;
-                    }
+                        while (flagTile._downNeighbor != null && !flagTile._downNeighbor.IsBlockDir && !flagTile._downNeighbor.isCorner)
+                        {
+                            moveTiles.Add(flagTile._downNeighbor);
+                            flagTile = flagTile._downNeighbor;
+                        }
 
-                    if (moveTiles.Count != 0 && moveTiles[0]._upNeighbor != null)
+
+                        if (moveTiles.Count != 0 && moveTiles[0]._upNeighbor != null)
+                        {
+                            moveTiles[0]._upNeighbor.IsBlockDir = true;
+                        }
+
+                        Debug.Log("down mtc: " + moveTiles.Count);
+
+
+                        count = Random.Range(1, moveTiles.Count);
+                        Debug.Log("down c: " + count);
+                        for (int j = 0; j <= count; j++)
+                        {
+                            moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+                            moveTiles[j].IsBlock = false;
+
+                        }
+
+                        if (moveTiles[count]._downNeighbor != null)
+                        {
+                            moveTiles[count]._downNeighbor.IsBlockDir = true;
+                        }
+
+                        flagTile = moveTiles[count];
+
+                        Debug.Log("down ft: " + flagTile);
+                        moveTiles.Clear();
+                        moveTiles.Add(flagTile);
+                        currentDir = (Direction)Random.Range(2, 4);
+                    }
+                    else
                     {
-                        moveTiles[0]._upNeighbor.IsBlockDir = true;
+                        currentDir = Direction.Up;
 
                     }
-
-                    count = Random.Range(1, moveTiles.Count);
-
-
-                    for (int j = 0; j < count; j++)
-                    {
-                        moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-
-
-                    }
-
-                    if (moveTiles[count - 1]._downNeighbor != null && !moveTiles[count - 1]._downNeighbor.IsBlockDir)
-                    {
-                        moveTiles[count - 1]._downNeighbor.IsBlockDir = true;
-
-                    }
-
-                    if (moveTiles[count - 1] != null)
-                    {
-                        flagTile = moveTiles[count - 1];
-
-                    }
-
-
-
-
-                    moveTiles.Clear();
-                    moveTiles.Add(flagTile);
-
-                    currentDir = (Direction)Random.Range(2, 4);
                     break;
                 case Direction.Right:
 
-                    while (flagTile._rightNeighbor != null && !flagTile._rightNeighbor.isCorner && !flagTile._rightNeighbor.IsBlockDir)
+                    if (flagTile._rightNeighbor != null && !flagTile._rightNeighbor.IsBlockDir && !flagTile._rightNeighbor.isCorner)
                     {
-                        moveTiles.Add(flagTile._rightNeighbor);
-                        flagTile = flagTile._rightNeighbor;
-                    }
+                        while (flagTile._rightNeighbor != null && !flagTile._rightNeighbor.IsBlockDir && !flagTile._rightNeighbor.isCorner)
+                        {
+                            moveTiles.Add(flagTile._rightNeighbor);
+                            flagTile = flagTile._rightNeighbor;
+                        }
 
-                    if (moveTiles.Count != 0 && moveTiles[0]._leftNeighbor != null)
+
+                        if (moveTiles.Count != 0 && moveTiles[0]._leftNeighbor != null)
+                        {
+                            moveTiles[0]._leftNeighbor.IsBlockDir = true;
+                        }
+
+                        Debug.Log("right mtc: " + moveTiles.Count);
+
+
+                        count = Random.Range(1, moveTiles.Count);
+                        Debug.Log("right c: " + count);
+
+                        for (int j = 0; j <= count; j++)
+                        {
+                            moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+                            moveTiles[j].IsBlock = false;
+
+                        }
+
+                        if (moveTiles[count]._rightNeighbor != null)
+                        {
+                            moveTiles[count]._rightNeighbor.IsBlockDir = true;
+                        }
+
+                        flagTile = moveTiles[count];
+
+                        Debug.Log("right ft: " + flagTile);
+                        moveTiles.Clear();
+                        moveTiles.Add(flagTile);
+                        currentDir = (Direction)Random.Range(0, 2);
+                    }
+                    else
                     {
-                        moveTiles[0]._leftNeighbor.IsBlockDir = true;
+                        currentDir = Direction.Left;
 
                     }
-
-                    count = Random.Range(1, moveTiles.Count);
-
-
-                    for (int j = 0; j < count; j++)
-                    {
-                        moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-
-
-                    }
-
-                    if (moveTiles[count - 1]._rightNeighbor != null && !moveTiles[count - 1]._rightNeighbor.IsBlockDir)
-                    {
-                        moveTiles[count - 1]._rightNeighbor.IsBlockDir = true;
-
-                    }
-
-                    if (moveTiles[count - 1] != null)
-                    {
-                        flagTile = moveTiles[count - 1];
-
-                    }
-
-
-
-
-                    moveTiles.Clear();
-                    moveTiles.Add(flagTile);
-
-
-                    currentDir = (Direction)Random.Range(0, 2);
                     break;
                 case Direction.Left:
 
-                    while (flagTile._leftNeighbor != null && !flagTile._leftNeighbor.isCorner && !flagTile._leftNeighbor.IsBlockDir)
+                    if (flagTile._leftNeighbor != null && !flagTile._leftNeighbor.IsBlockDir && !flagTile._leftNeighbor.isCorner)
                     {
-                        moveTiles.Add(flagTile._leftNeighbor);
-                        flagTile = flagTile._leftNeighbor;
-                    }
+                        while (flagTile._leftNeighbor != null && !flagTile._leftNeighbor.IsBlockDir && !flagTile._leftNeighbor.isCorner)
+                        {
+                            moveTiles.Add(flagTile._leftNeighbor);
+                            flagTile = flagTile._leftNeighbor;
+                        }
 
-                    if (moveTiles.Count != 0 && moveTiles[0]._rightNeighbor != null)
+
+                        if (moveTiles.Count != 0 && moveTiles[0]._rightNeighbor != null)
+                        {
+                            moveTiles[0]._rightNeighbor.IsBlockDir = true;
+                        }
+
+                        Debug.Log("left mtc: " + moveTiles.Count);
+
+
+                        count = Random.Range(1, moveTiles.Count);
+                        Debug.Log("left c: " + count);
+                        for (int j = 0; j <= count; j++)
+                        {
+                            moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+                            moveTiles[j].IsBlock = false;
+
+                        }
+
+                        if (moveTiles[count]._leftNeighbor != null)
+                        {
+                            moveTiles[count]._leftNeighbor.IsBlockDir = true;
+                        }
+
+                        flagTile = moveTiles[count];
+
+                        Debug.Log("left ft: " + flagTile);
+                        moveTiles.Clear();
+                        moveTiles.Add(flagTile);
+                        currentDir = (Direction)Random.Range(0, 2);
+                    }
+                    else
                     {
-                        moveTiles[0]._rightNeighbor.IsBlockDir = true;
+                        currentDir = Direction.Right;
 
                     }
-
-                    count = Random.Range(1, moveTiles.Count);
-
-
-                    for (int j = 0; j < count; j++)
-                    {
-                        moveTiles[j].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-
-
-                    }
-
-                    if (moveTiles[count - 1]._leftNeighbor != null && !moveTiles[count - 1]._leftNeighbor.IsBlockDir)
-                    {
-                        moveTiles[count - 1]._leftNeighbor.IsBlockDir = true;
-
-                    }
-
-                    if (moveTiles[count - 1] != null)
-                    {
-                        flagTile = moveTiles[count - 1];
-
-                    }
-
-
-
-
-                    moveTiles.Clear();
-                    moveTiles.Add(flagTile);
-
-
-                    currentDir = (Direction)Random.Range(0, 2);
                     break;
             }
 
@@ -274,10 +287,6 @@ public class LevelGenerator : MonoBehaviour
 
         }
 
-        for (int i = 0; i < moveTiles.Count; i++)
-        {
-            moveTiles[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
-        }
 
 
 
