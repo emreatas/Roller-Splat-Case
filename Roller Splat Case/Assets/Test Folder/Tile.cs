@@ -6,6 +6,8 @@ public class Tile : MonoBehaviour
 {
     private int _tileX;
     private int _tileY;
+    [SerializeField] private GameObject _wall;
+
 
     [SerializeField] private Vector2Int _position;
     [SerializeField] private bool _isBlockDir;
@@ -60,6 +62,9 @@ public class Tile : MonoBehaviour
             if (_isCorner)
             {
                 gameObject.GetComponent<MeshRenderer>().material.color = Color.black;
+                _wall.SetActive(true);
+                _wall.GetComponent<MeshRenderer>().material.color = Color.black;
+
 
             }
         }
@@ -74,6 +79,8 @@ public class Tile : MonoBehaviour
             if (IsBlock && !isCorner)
             {
                 gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+                _wall.SetActive(true);
+                _wall.GetComponent<MeshRenderer>().material.color = Color.red;
             }
             else if (IsBlock && isCorner)
             {
@@ -82,7 +89,7 @@ public class Tile : MonoBehaviour
             else
             {
                 gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
-
+                _wall.SetActive(false);
             }
         }
     }
