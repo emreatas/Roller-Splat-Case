@@ -1,24 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class CanvasController : MonoBehaviour
 {
-    public TextMeshProUGUI text;
-    private void OnEnable()
+
+
+    public Scene gameScene;
+
+    public void StartButton()
     {
-        GameManager.CurrentLevel += GameManager_CurrentLevel;
+        SceneManager.LoadScene("MainScene");
     }
 
-    private void GameManager_CurrentLevel(int obj)
-    {
-        text.text = (obj + 1).ToString();
-    }
-    private void OnDisable()
-    {
-        GameManager.CurrentLevel -= GameManager_CurrentLevel;
 
-    }
 }
 

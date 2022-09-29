@@ -88,7 +88,7 @@ public class LevelGenerator : MonoBehaviour
         moveTiles.Add(flagTile);
         Debug.Log(flagTile);
 
-        // _changeDirCount = Random.Range(10, 20);
+        _changeDirCount = Random.Range(10, 100);
 
         for (int i = 0; i < _changeDirCount; i++)
         {

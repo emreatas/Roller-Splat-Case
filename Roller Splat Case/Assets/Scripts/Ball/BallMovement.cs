@@ -61,6 +61,10 @@ public class BallMovement : MonoBehaviour
 
     private void Update()
     {
+
+        
+
+
         _isTap = false;
         _isSwipeLeft = false;
         _isSwipeRight = false;
@@ -81,6 +85,7 @@ public class BallMovement : MonoBehaviour
             Reset();
         }
 
+        
 
         _swipeDelta = Vector3.zero;
         if (_isDragging)
