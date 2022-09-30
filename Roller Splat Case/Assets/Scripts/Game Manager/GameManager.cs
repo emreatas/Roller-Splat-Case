@@ -70,5 +70,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static event Action<int> TotalUnBlockTiles;
+    public void OnTotalUnBlockTiles(int count)
+    {
+        if (TotalUnBlockTiles != null)
+        {
+            TotalUnBlockTiles(count);
+        }
+    }
+
+    public static event Action GenerateGrid;
+    public void OnGenerateGrid()
+    {
+        if (GenerateGrid != null)
+        {
+            GenerateGrid();
+        }
+    }
+
+    public static event Action ClearGrid;
+    public void OnClearGrid()
+    {
+        if (ClearGrid != null)
+        {
+            ClearGrid();
+        }
+    }
+
+    public static event Action GenerateMap;
+    public void OnGenerateMap()
+    {
+        if (GenerateMap != null)
+        {
+            GenerateMap();
+        }
+    }
+
+
+
 
 }

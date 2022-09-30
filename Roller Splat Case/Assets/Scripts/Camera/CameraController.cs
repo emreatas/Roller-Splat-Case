@@ -10,6 +10,12 @@ public class CameraController : MonoBehaviour
     private void OnEnable()
     {
         GameManager.LevelSize += GameManager_LevelSize;
+        GameManager.LevelChanged += GameManager_LevelChanged;
+    }
+
+    private void GameManager_LevelChanged()
+    {
+        StartCoroutine(Cam());
     }
 
     private void GameManager_LevelSize(int arg1, int arg2)
@@ -19,13 +25,12 @@ public class CameraController : MonoBehaviour
     }
     private void OnDisable()
     {
-        GameManager.LevelSize += GameManager_LevelSize;
+        GameManager.LevelSize -= GameManager_LevelSize;
+        GameManager.LevelChanged -= GameManager_LevelChanged;
+
 
     }
-    void Start()
-    {
-        StartCoroutine(Cam());
-    }
+
 
     IEnumerator Cam()
     {

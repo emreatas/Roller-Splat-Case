@@ -12,7 +12,7 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
-    private Dictionary<Vector2Int, Tile> _tiles;
+    [SerializeField] private Dictionary<Vector2Int, Tile> _tiles;
     public int firstTileX;
     public int firstTileY;
     public int _height;
@@ -23,12 +23,25 @@ public class LevelGenerator : MonoBehaviour
 
     enum Direction { Up, Down, Right, Left };
 
+    public static event System.Action<int> OnTotalUnBlockTiles;
+
     private void OnEnable()
     {
         GameManager.AllTilesPos += GameManager_AllTilesPos;
         GameManager.LevelSize += GameManager_LevelSize;
+        GameManager.GenerateMap += GameManager_GenerateMap;
+        GameManager.LevelChanged += GameManager_LevelChanged;
 
+    }
 
+    private void GameManager_LevelChanged()
+    {
+        moveTiles.Clear();
+    }
+
+    private void GameManager_GenerateMap()
+    {
+        MapGenerator();
     }
 
     private void GameManager_LevelSize(int arg1, int arg2)
@@ -41,17 +54,29 @@ public class LevelGenerator : MonoBehaviour
     {
         _tiles = obj;
     }
+
     private void OnDisable()
     {
         GameManager.AllTilesPos -= GameManager_AllTilesPos;
         GameManager.LevelSize -= GameManager_LevelSize;
+        GameManager.GenerateMap -= GameManager_GenerateMap;
+        GameManager.LevelChanged -= GameManager_LevelChanged;
+
+
+
+
 
     }
-    private void Start()
-    {
-        //StartCoroutine(Test());
-        MapGenerator();
-    }
+
+
+
+    //private void Start()
+    //{
+    //    //StartCoroutine(Test());
+    //    MapGenerator();
+
+
+    //}
 
 
 
@@ -64,7 +89,7 @@ public class LevelGenerator : MonoBehaviour
 
         flagTile = _tiles[new Vector2Int(firstTileX, firstTileY)];
 
-        flagTile.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+        // flagTile.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
 
         GameManager.Instance.OnStartPos(flagTile.Position);
 
@@ -86,7 +111,6 @@ public class LevelGenerator : MonoBehaviour
         Direction currentDir = (Direction)Random.Range(0, 4);
         int count;
         moveTiles.Add(flagTile);
-        Debug.Log(flagTile);
 
         _changeDirCount = Random.Range(10, 100);
 
@@ -111,11 +135,9 @@ public class LevelGenerator : MonoBehaviour
                             moveTiles[0]._downNeighbor.IsBlockDir = true;
                         }
 
-                        Debug.Log("up mtc: " + moveTiles.Count);
 
 
                         count = Random.Range(1, moveTiles.Count);
-                        Debug.Log("up c: " + count);
                         for (int j = 0; j <= count; j++)
                         {
                             moveTiles[j].IsBlock = false;
@@ -123,7 +145,6 @@ public class LevelGenerator : MonoBehaviour
 
                         if (moveTiles[count]._upNeighbor != null && !moveTiles[count]._upNeighbor.IsBlock)
                         {
-                            Debug.Log("up girdi");
 
                             moveTiles[count - 1]._upNeighbor.IsBlockDir = true;
                             moveTiles[count].IsBlock = true;
@@ -140,8 +161,7 @@ public class LevelGenerator : MonoBehaviour
                             }
 
                         }
-                        Debug.Log("up mt max:" + moveTiles[count]);
-                        Debug.Log("up ft: " + flagTile);
+
                         moveTiles.Clear();
                         moveTiles.Add(flagTile);
 
@@ -175,12 +195,12 @@ public class LevelGenerator : MonoBehaviour
                             moveTiles[0]._upNeighbor.IsBlockDir = true;
                         }
 
-                        Debug.Log("down mtc: " + moveTiles.Count);
+
 
 
                         count = Random.Range(1, moveTiles.Count);
 
-                        Debug.Log("down c: " + count);
+
 
 
 
@@ -192,7 +212,6 @@ public class LevelGenerator : MonoBehaviour
 
                         if (moveTiles[count]._downNeighbor != null && !moveTiles[count]._downNeighbor.IsBlock)
                         {
-                            Debug.Log("down girdi");
 
                             moveTiles[count - 1]._downNeighbor.IsBlockDir = true;
                             moveTiles[count].IsBlock = true;
@@ -211,9 +230,7 @@ public class LevelGenerator : MonoBehaviour
                         }
 
 
-                        Debug.Log("down mt max:" + moveTiles[count]);
 
-                        Debug.Log("down ft: " + flagTile);
                         moveTiles.Clear();
                         moveTiles.Add(flagTile);
                         currentDir = (Direction)Random.Range(2, 4);
@@ -240,11 +257,10 @@ public class LevelGenerator : MonoBehaviour
                             moveTiles[0]._leftNeighbor.IsBlockDir = true;
                         }
 
-                        Debug.Log("right mtc: " + moveTiles.Count);
+
 
 
                         count = Random.Range(1, moveTiles.Count);
-                        Debug.Log("right c: " + count);
 
                         for (int j = 0; j <= count; j++)
                         {
@@ -254,7 +270,6 @@ public class LevelGenerator : MonoBehaviour
 
                         if (moveTiles[count]._rightNeighbor != null && !moveTiles[count]._rightNeighbor.IsBlock)
                         {
-                            Debug.Log("right girdi");
 
                             moveTiles[count - 1]._rightNeighbor.IsBlockDir = true;
                             moveTiles[count].IsBlock = true;
@@ -271,9 +286,7 @@ public class LevelGenerator : MonoBehaviour
                             }
 
                         }
-                        Debug.Log("right mt max:" + moveTiles[count]);
 
-                        Debug.Log("right ft: " + flagTile);
                         moveTiles.Clear();
                         moveTiles.Add(flagTile);
                         currentDir = (Direction)Random.Range(0, 2);
@@ -300,11 +313,9 @@ public class LevelGenerator : MonoBehaviour
                             moveTiles[0]._rightNeighbor.IsBlockDir = true;
                         }
 
-                        Debug.Log("left mtc: " + moveTiles.Count);
 
 
                         count = Random.Range(1, moveTiles.Count);
-                        Debug.Log("left c: " + count);
                         for (int j = 0; j <= count; j++)
                         {
                             moveTiles[j].IsBlock = false;
@@ -313,7 +324,6 @@ public class LevelGenerator : MonoBehaviour
 
                         if (moveTiles[count]._leftNeighbor != null && !moveTiles[count]._leftNeighbor.IsBlock)
                         {
-                            Debug.Log("left girdi");
                             moveTiles[count - 1]._leftNeighbor.IsBlockDir = true;
                             moveTiles[count].IsBlock = true;
 
@@ -329,9 +339,7 @@ public class LevelGenerator : MonoBehaviour
                             }
 
                         }
-                        Debug.Log("left mt max:" + moveTiles[count]);
 
-                        Debug.Log("left ft: " + flagTile);
                         moveTiles.Clear();
                         moveTiles.Add(flagTile);
                         currentDir = (Direction)Random.Range(0, 2);
@@ -362,9 +370,22 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        _tiles[new Vector2Int(firstTileX, firstTileY)].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+        //  _tiles[new Vector2Int(firstTileX, firstTileY)].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
 
+        int unBlockTileCount = 0;
+        for (int i = 0; i < _height; i++)
+        {
+            for (int j = 0; j < _width; j++)
+            {
+                if (!_tiles[new Vector2Int(j, i)].IsBlock)
+                {
+                    unBlockTileCount++;
+                }
+            }
+        }
 
+        GameManager.Instance.OnTotalUnBlockTiles(unBlockTileCount);
+        LevelGenerator.OnTotalUnBlockTiles?.Invoke(unBlockTileCount);
 
 
         //int a = 0;
@@ -681,5 +702,35 @@ public class LevelGenerator : MonoBehaviour
     //                break;
     //        }
     //    }
+
+    //    int a = 0;
+    //    for (int i = 0; i < _height; i++)
+    //    {
+    //        for (int j = 0; j < _width; j++)
+    //        {
+    //            if (!_tiles[new Vector2Int(j, i)].IsBlock)
+    //            {
+    //                a++;
+    //            }
+    //        }
+    //    }
+    //    Debug.Log(a);
+    //    if (a < 50)
+    //    {
+    //        for (int i = 0; i < _height; i++)
+    //        {
+    //            for (int j = 0; j < _width; j++)
+    //            {
+    //                _tiles[new Vector2Int(j, i)].IsBlock = true;
+    //            }
+    //        }
+    //        StartCoroutine(Test());
+    //        a = 0;
+    //    }
+    //    else
+    //    {
+    //        StopCoroutine(Test());
+    //    }
+
     //}
 }

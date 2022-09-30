@@ -26,14 +26,23 @@ public class BallMovement : MonoBehaviour
     public Tile currentTile;
     public List<Tile> movementTiles;
     private int _pathWayCurrentIndex = 0;
+    private int _totalUnblockTileCount = 0;
+    private int _coloredTile = 0;
 
     private void OnEnable()
     {
         GameManager.AllTilesPos += GameManager_AllTilesPos;
         GameManager.StartPos += GameManager_StartPos;
+        GameManager.TotalUnBlockTiles += GameManager_TotalUnBlockTiles;
+        LevelGenerator.OnTotalUnBlockTiles += LevelGenerator_OnTotalUnBlockTiles;
     }
 
 
+    private void GameManager_TotalUnBlockTiles(int obj)
+    {
+        //_totalUnblockTileCount = obj;
+
+    }
 
     private void GameManager_AllTilesPos(Dictionary<Vector2Int, Tile> obj)
     {
@@ -45,8 +54,6 @@ public class BallMovement : MonoBehaviour
     {
 
         currentTile = tiles[obj];
-        tiles[obj].gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
-        currentTile.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
         gameObject.transform.position = currentTile.transform.position;
         gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + .5f, transform.position.z);
 
@@ -55,6 +62,22 @@ public class BallMovement : MonoBehaviour
     {
         GameManager.AllTilesPos -= GameManager_AllTilesPos;
         GameManager.StartPos -= GameManager_StartPos;
+        GameManager.TotalUnBlockTiles -= GameManager_TotalUnBlockTiles;
+        LevelGenerator.OnTotalUnBlockTiles -= LevelGenerator_OnTotalUnBlockTiles;
+
+    }
+
+    private void Start()
+    {
+        //Debug.Log("total colored tile" + _totalUnblockTileCount);
+    }
+    public static event Action<int> TotalUnBlockTiles;
+
+    private void LevelGenerator_OnTotalUnBlockTiles(int obj)
+    {
+
+        _totalUnblockTileCount = obj;
+
 
     }
 
@@ -62,7 +85,7 @@ public class BallMovement : MonoBehaviour
     private void Update()
     {
 
-        
+
 
 
         _isTap = false;
@@ -73,7 +96,7 @@ public class BallMovement : MonoBehaviour
 
 
 
-        if (Input.GetMouseButtonDown(0) && gameObject.GetComponent<Rigidbody>().velocity.magnitude <= 5)
+        if (Input.GetMouseButtonDown(0))
         {
             _isTap = true;
             _isDragging = true;
@@ -85,7 +108,7 @@ public class BallMovement : MonoBehaviour
             Reset();
         }
 
-        
+
 
         _swipeDelta = Vector3.zero;
         if (_isDragging)
@@ -171,6 +194,7 @@ public class BallMovement : MonoBehaviour
             return;
         }
         movementTiles.Clear();
+        movementTiles.Add(currentTile);
 
         if (_isSwipeUp)
         {
@@ -240,7 +264,11 @@ public class BallMovement : MonoBehaviour
             if (gameObject.transform.position == path[_pathWayCurrentIndex].transform.position &&
                 _pathWayCurrentIndex < path.Count)
             {
-                path[_pathWayCurrentIndex].GetComponent<MeshRenderer>().material.color = Color.blue;
+                if (!path[_pathWayCurrentIndex].IsColored)
+                {
+                    path[_pathWayCurrentIndex].IsColored = true;
+                    _coloredTile++;
+                }
                 _pathWayCurrentIndex++;
             }
         }
@@ -251,6 +279,16 @@ public class BallMovement : MonoBehaviour
             _isMoving = false;
 
         }
+
+        if (_totalUnblockTileCount == _coloredTile)
+        {
+            _isMoving = false;
+            movementTiles.Clear();
+            currentTile = null;
+            GameManager.Instance.OnGameWin();
+
+        }
+
     }
 
 

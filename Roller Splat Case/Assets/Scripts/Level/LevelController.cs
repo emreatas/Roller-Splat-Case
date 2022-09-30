@@ -4,48 +4,46 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField] private List<LevelManager> levelManagers;
-    private int levelCount = 0;
+    private Dictionary<Vector2Int, Tile> _tiles;
 
-    private void Start()
-    {
-        for (int i = 0; i < levelManagers.Count; i++)
-        {
-            levelManagers[i].gameObject.SetActive(false);
-        }
-        levelManagers[levelCount].gameObject.SetActive(true);
-        GameManager.Instance.OnCurrentLevel(levelCount);
 
-    }
     private void OnEnable()
     {
-        GameManager.LevelChanged += GameManager_LevelChanged;
+        GameManager.AllTilesPos += GameManager_AllTilesPos;
+
     }
 
-
-
-    private void GameManager_LevelChanged()
+    private void GameManager_AllTilesPos(Dictionary<Vector2Int, Tile> obj)
     {
-        if (levelCount < levelManagers.Count - 1)
-        {
-
-            levelCount++;
-            GameManager.Instance.OnCurrentLevel(levelCount);
-
-            for (int i = 0; i < levelManagers.Count; i++)
-            {
-                levelManagers[i].gameObject.SetActive(false);
-            }
-
-            levelManagers[levelCount].gameObject.SetActive(true);
-
-
-        }
+        _tiles = obj;
     }
     private void OnDisable()
     {
-        GameManager.LevelChanged -= GameManager_LevelChanged;
+        GameManager.AllTilesPos -= GameManager_AllTilesPos;
 
+    }
+    private void Start()
+    {
+        //  GenerateLevel();
 
+    }
+    public void GenerateLevel()
+    {
+
+        GameManager.Instance.OnGenerateGrid();
+        GameManager.Instance.OnGenerateMap();
+        GameManager.Instance.OnLevelChanged();
+    }
+
+    public void ClearMap()
+    {
+        _tiles.Clear();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+
+        GameManager.Instance.OnAllTiles(_tiles);
     }
 }
