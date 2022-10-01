@@ -208,7 +208,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1524319217}
-        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_TargetAssemblyTypeName: MainMenuCanvs, Assembly-CSharp
         m_MethodName: BackButton
         m_Mode: 2
         m_Arguments:
@@ -822,7 +822,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1524319217}
-        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_TargetAssemblyTypeName: MainMenuCanvs, Assembly-CSharp
         m_MethodName: OpenButton
         m_Mode: 2
         m_Arguments:
@@ -938,6 +938,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1185894403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1185894405}
+  - component: {fileID: 1185894404}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1185894404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185894403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65941f945dac910418dac9454db35f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1185894405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185894403}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 720, y: 88.67505, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1333768116
 GameObject:
@@ -1131,10 +1175,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1524319212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ee966f1f35d74845ad7711438827c3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 40cef9b881eb87b42bf8a61cc9fae331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backButton: {fileID: 0}
 --- !u!1 &1553414419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,7 +1964,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1524319217}
-        m_TargetAssemblyTypeName: CanvasController, Assembly-CSharp
+        m_TargetAssemblyTypeName: MainMenuCanvs, Assembly-CSharp
         m_MethodName: StartButton
         m_Mode: 1
         m_Arguments:

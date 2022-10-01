@@ -75,7 +75,8 @@ public class BallMovement : MonoBehaviour
 
     private void LevelGenerator_OnTotalUnBlockTiles(int obj)
     {
-
+        _totalUnblockTileCount = 0;
+        _coloredTile = 0;
         _totalUnblockTileCount = obj;
 
 
@@ -85,7 +86,10 @@ public class BallMovement : MonoBehaviour
     private void Update()
     {
 
-
+        if (GameManager.Instance.GetOnGamePause())
+        {
+            return;
+        }
 
 
         _isTap = false;
@@ -271,6 +275,15 @@ public class BallMovement : MonoBehaviour
                 }
                 _pathWayCurrentIndex++;
             }
+
+            if (_totalUnblockTileCount == _coloredTile)
+            {
+                _isMoving = false;
+                movementTiles.Clear();
+                currentTile = null;
+                GameManager.Instance.OnGameWin();
+
+            }
         }
         else
         {
@@ -280,14 +293,7 @@ public class BallMovement : MonoBehaviour
 
         }
 
-        if (_totalUnblockTileCount == _coloredTile)
-        {
-            _isMoving = false;
-            movementTiles.Clear();
-            currentTile = null;
-            GameManager.Instance.OnGameWin();
 
-        }
 
     }
 

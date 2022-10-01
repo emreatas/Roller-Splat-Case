@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+
     private void Awake()
     {
         Instance = this;
@@ -106,7 +107,68 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static event Action<int> MapSeed;
+    public void OnMapSeed(int seed)
+    {
+        if (MapSeed != null)
+        {
+            MapSeed(seed);
+        }
+    }
+    public static event Action ChangeMap;
+    public void OnChangeMap()
+    {
+        if (ChangeMap != null)
+        {
+            ChangeMap();
+        }
+    }
 
 
+
+    private int _lastLevelCount = 5;
+    public int LastLevelCount()
+    {
+
+        return _lastLevelCount;
+    }
+    private int _currentLevel;
+
+    public int GetCurrentLevel()
+    {
+
+        _currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
+
+        return _currentLevel;
+    }
+    public void SetCurrentLevel(int value)
+    {
+        PlayerPrefs.SetInt("CurrentLevel", value);
+        if (value > _lastLevelCount)
+        {
+            _lastLevelCount = value;
+        }
+    }
+
+    public int GetCurrentLevelSeed(int level)
+    {
+        return PlayerPrefs.GetInt("Level" + level, 0);
+    }
+    public void SetLevelSeed(int level)
+    {
+        PlayerPrefs.SetInt("Level" + level, level * 20);
+    }
+
+    private bool _onGamePause = false;
+
+    public void SetGamePause(bool pause)
+    {
+        _onGamePause = pause;
+    }
+
+    public bool GetOnGamePause()
+    {
+        return _onGamePause;
+    }
 
 }

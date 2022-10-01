@@ -29,6 +29,7 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
+        Random.InitState(GameManager.Instance.GetCurrentLevelSeed(GameManager.Instance.GetCurrentLevel()));
 
         _tilePrefab.GetComponent<Tile>().color = Random.ColorHSV(0, 1);
 

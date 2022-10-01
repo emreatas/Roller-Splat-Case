@@ -32,6 +32,7 @@ public class LevelGenerator : MonoBehaviour
         GameManager.GenerateMap += GameManager_GenerateMap;
         GameManager.LevelChanged += GameManager_LevelChanged;
 
+
     }
 
     private void GameManager_LevelChanged()
@@ -82,6 +83,10 @@ public class LevelGenerator : MonoBehaviour
 
     public void MapGenerator()
     {
+
+        Random.InitState(GameManager.Instance.GetCurrentLevelSeed(GameManager.Instance.GetCurrentLevel()));
+
+
         firstTileX = Random.Range(1, _width - 1);
         firstTileY = Random.Range(1, _height - 1);
 
