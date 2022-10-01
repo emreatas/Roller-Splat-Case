@@ -18,6 +18,8 @@ public class ButtonScript : MonoBehaviour
     {
         GameManager.Instance.SetCurrentLevel(buttonID);
         GameManager.Instance.OnChangeMap();
+        gameObject.transform.parent.parent.parent.parent.gameObject.SetActive(false);
     }
+
 
 }

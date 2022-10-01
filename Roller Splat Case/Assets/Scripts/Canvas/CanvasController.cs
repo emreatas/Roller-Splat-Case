@@ -33,6 +33,7 @@ public class CanvasController : MonoBehaviour
     {
         LevelPanel();
         GameManager.Instance.SetGamePause(true);
+        GameManager.Instance.SetCurrentLevel(1);
     }
 
     public void StartButton()
