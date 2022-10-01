@@ -59,6 +59,7 @@ public class CanvasController : MonoBehaviour
 
     }
 
+
     public void ResumeButton(Image panelImage)
     {
         panelImage.gameObject.SetActive(false);
