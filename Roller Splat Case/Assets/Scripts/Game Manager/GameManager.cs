@@ -126,11 +126,16 @@ public class GameManager : MonoBehaviour
 
 
 
-    private int _lastLevelCount = 5;
-    public int LastLevelCount()
+    private int _lastLevelCount = 1;
+    public int GetLastLevelCount()
     {
 
-        return _lastLevelCount;
+        return PlayerPrefs.GetInt("LastLevelCount", 1);
+    }
+    public void SetLastLevelCount(int value)
+    {
+
+        PlayerPrefs.SetInt("LastLevelCount", value);
     }
     private int _currentLevel;
 
@@ -144,9 +149,10 @@ public class GameManager : MonoBehaviour
     public void SetCurrentLevel(int value)
     {
         PlayerPrefs.SetInt("CurrentLevel", value);
+
         if (value > _lastLevelCount)
         {
-            _lastLevelCount = value;
+            SetLastLevelCount(value);
         }
     }
 

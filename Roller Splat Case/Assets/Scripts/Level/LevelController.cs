@@ -48,6 +48,8 @@ public class LevelController : MonoBehaviour
 
     }
 
+
+
     public void NextLevel()
     {
         GameManager.Instance.SetCurrentLevel(GameManager.Instance.GetCurrentLevel());

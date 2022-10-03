@@ -13,6 +13,8 @@ public class CanvasController : MonoBehaviour
     public Text levelText;
     public Button level;
     public GameObject content;
+    public TextMeshProUGUI levelHeader;
+
     private void OnEnable()
     {
         GameManager.GameWin += GameManager_GameWin;
@@ -33,7 +35,11 @@ public class CanvasController : MonoBehaviour
     {
         LevelPanel();
         GameManager.Instance.SetGamePause(true);
-        GameManager.Instance.SetCurrentLevel(1);
+    }
+
+    private void Update()
+    {
+        levelHeader.text = "LEVEL " + GameManager.Instance.GetCurrentLevel().ToString();
     }
 
     public void StartButton()
@@ -79,7 +85,7 @@ public class CanvasController : MonoBehaviour
 
         // Debug.Log(GameManager.Instance.LastLevelCount());
 
-        for (int i = 0; i <= GameManager.Instance.GetCurrentLevel(); i++)
+        for (int i = 0; i <= GameManager.Instance.GetLastLevelCount(); i++)
         {
             Button button = Instantiate(level);
             button.GetComponent<ButtonScript>().buttonID = i + 1;
