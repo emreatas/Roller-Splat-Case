@@ -85,7 +85,7 @@ public class CanvasController : MonoBehaviour
 
         // Debug.Log(GameManager.Instance.LastLevelCount());
 
-        for (int i = 0; i <= GameManager.Instance.GetLastLevelCount(); i++)
+        for (int i = 0; i < GameManager.Instance.GetLastLevelCount(); i++)
         {
             Button button = Instantiate(level);
             button.GetComponent<ButtonScript>().buttonID = i + 1;
